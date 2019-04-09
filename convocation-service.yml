@@ -1,0 +1,18 @@
+message: Greetings from the CONVOCATION-SERVICE.
+
+application:
+  email:
+    enabled: true
+  convocation:
+    reminderDelay: 2
+    cron:
+      reminder: "0 0 7 * * ?"
+      noResponseInformation: "0 0 6 * * ?"
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql/stela-convocation
+    username: stela
+    password: stelapwd
+  flyway:
+    placeholderReplacement: false

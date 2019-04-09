@@ -1,0 +1,37 @@
+message: Greetings from the ACTE-SERVICE.
+
+application:
+  archive:
+    maxSize: 150000000
+    maxSizePerHour: 648358000
+  email:
+    done_folder: DONE
+    error_folder: ERROR
+    # To look at later on : https://docs.spring.io/spring-integration/docs/5.1.2.RELEASE/reference/html/mail.html#mail-inbound
+    listening:
+      host: imap.gmail.com
+      port: 993
+  drafts:
+    deleteExpiredCron: "0 0 * * * *"
+    maxDaysDraftLifetime: 14
+  miat:
+    url: "https://serveur.miat/?user=USER&password=PASSWORD"
+    rescueUrl: "https://rescue.serveur.miat/?user=USER&password=PASSWORD"
+    keystorepath: /path/to/keystore.p12
+    keystorepasswd: "keystorePwd"
+    truststorepath: /path/to/truststore.jks
+    truststorepasswd: "truststorePwd"
+    accessTimeout: 30000
+  acte:
+    scheduling:
+      poolSize: 10
+  datacore:
+    dataOwnerSiren: 214400152
+    dcImporterUrl: https://dcimporter.sictiam.fr
+    baseUri: http://data.sictiam.fr/dc/type
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql/stela-acte
+    username: stela
+    password: stelapwd

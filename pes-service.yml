@@ -1,0 +1,66 @@
+message: Greetings from the PES-SERVICE.
+
+logging:
+  level:
+    org.springframework.integration.ftp: DEBUG
+
+application:
+  filenamepattern: "^([0-9]{5})-([0-9]{4})-([P]-(([D][N|A])|([R][N|A])|([B][U])|([I][N])|([P][J]))|[A]-(([B][P])|([B][S])|([D][M])|([C][A])))-([0-9]{1,4})-([0-9]{1,4}-)*([0-9]{13})\\.xml$"
+  archive:
+    maxSize: 104857600
+    maxSizePerHour: 64835800000
+  ftp:
+    host: 127.0.0.1
+    port: 20
+    username: username
+    password: password
+    bufferSize: 1000000000
+    timeout: 30000
+  retry:
+    maxAttemps: 2
+    # frequency of retry in hour
+    frequency: 24
+    cron: "0 0/15 7-18 2/5 * ?"
+  receiverTask:
+    hoursWithoutNewFiles: 4
+    maxWaitingPes: 20
+    alertEmail: someone@sictiam.fr
+  sesile:
+    cron: "*/30 * * * * ?"
+    apiUrl: "https://demo.sesile.fr/"
+    apiV4Url: "https://sesile4-integration.sictiam.fr/"
+  dailymail:
+    active: true
+    cron: "0 0 7 * * MON-FRI"
+    retensiondays: 1
+  pdfValidation: false
+  pes:
+    scheduling:
+      poolSize: 10
+  anomaly:
+    fixedDelay: 10000
+    rate: 3
+    notificationLink: "https://team.sictiam.fr/hooks/hook-id"
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql/stela-pes
+    username: stela
+    password: stelapwd
+  jackson:
+    serialization.FAIL_ON_EMPTY_BEANS: false
+    time-zone: Europe/Paris
+
+security:
+  basicAuth:
+    connexion:
+      user: user
+      password: password
+      role: DEV
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /api/pes/actuator

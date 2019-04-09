@@ -1,0 +1,84 @@
+application:
+  security:
+    fetchUserInfo: true
+
+logging:
+  level:
+    fr.sictiam.stela.apigateway.config.filter: DEBUG
+    org.springframework.security: INFO
+    org.oasis_eu.spring: INFO
+
+spring:
+  main:
+    # to allow overriding openIdCConfiguration already defined in KernelConfiguration class in ozwillo lib
+    allow-bean-definition-overriding: true
+
+security:
+  basic:
+    enabled: false
+  oauth2:
+    resource:
+      preferTokenInfo: false
+
+zuul:
+  ribbon-isolation-strategy: thread
+  # https://cloud.spring.io/spring-cloud-static/Greenwich.RELEASE/single/spring-cloud.html#_zuul_timeouts
+  #   If Zuul uses service discovery, you need to configure these timeouts with the ribbon.ReadTimeout and ribbon.SocketTimeout Ribbon properties.
+  #   If you have configured Zuul routes by specifying URLs, you need to use zuul.host.connect-timeout-millis and zuul.host.socket-timeout-millis
+  # So I guess we have to configure both
+  host:
+    connect-timeout-millis: 3000
+    socket-timeout-millis: 120000
+  ignored-patterns: /login, /callback, /api/api-gateway/**
+  routes:
+    pes-service:
+      path: /api/pes/**
+      stripPrefix: false
+      url: http://localhost:9010/
+    pes-service-paull:
+      path: /externalws/**/webservhelios/services/api/**
+      stripPrefix: false
+      url: http://localhost:9010/rest
+    pes-service-paull-generic:
+      path: /externalws/**/webservgeneriques/services/api/**
+      stripPrefix: false
+      url: http://localhost:9010/rest
+    pes-service-paull-soap:
+      path: /externalws/**/webservhelios/**
+      stripPrefix: false
+      url: http://localhost:9010/
+    acte-service-paull:
+      path: /externalws/**/webservactes/**
+      stripPrefix: false
+      serviceId: acte-service
+    admin-service-paull:
+      path: /externalws/**/services/**
+      stripPrefix: false
+      serviceId: admin-service
+    admin-service:
+      path: /api/admin/**
+      stripPrefix: false
+      serviceId: admin-service
+    acte-service:
+      path: /api/acte/**
+      stripPrefix: false
+      serviceId: acte-service
+    acte-webservices:
+      path: /editeur/api/acte/**
+      stripPrefix: false
+      serviceId: acte-service
+    convocation-service:
+      path: /api/convocation/**
+      stripPrefix: false
+      serviceId: convocation-service
+
+# cf https://github.com/spring-cloud/spring-cloud-netflix/issues/2606#issuecomment-383031938
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 247000
+# hystrix.command.default.execution.timeout.enabled: false ?
+
+# ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 120000
+  maxAutoRetries: 1
+  maxAutoRetriesNextServer: 1

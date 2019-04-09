@@ -1,0 +1,42 @@
+message: Greetings from the Admin microservice [using the LOCALHOST config].
+
+application:
+  usersgw:
+    url: http://localhost:8080/api/usersgw
+    user: admin
+    password: password
+
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
+ozwillo:
+  application:
+    instanciation_secret: instanciation_secret
+    cancellation_secret: cancellation_secret
+  defaultInstances:
+    sictiam:
+      client_id: client_id
+      client_secret: client_secret
+      destruction_secret: destruction_secret
+      status_changed_secret: status_changed_secret
+  service:
+    localId: back-office
+    name: STELA
+    description: Tiers de télétransmission
+    tosUri: https://stela3.sictiam.fr/mentions-legales
+    policyUri: https://stela3.sictiam.fr/mentions-legales
+    icon: https://stela3.sictiam.fr/img/icon.png
+    contacts:
+      - mailto:admin@stela.fr
+      - mailto:demat@sictiam.fr
+
+spring:
+  output.ansi.enabled: DETECT
+  datasource:
+    url: jdbc:postgresql://postgresql/stela-admin
+    username: stela
+    password: stelapwd
+
+# Need to give it a hostname to be easily adressable by other services
+eureka.instance.virtual-host-name: admin-service
